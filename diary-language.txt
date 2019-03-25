@@ -1,0 +1,58 @@
+# Datenstrom Yellow language
+
+Language: en
+DiaryDay: Day
+DiaryHour: Hour
+DiaryPlace: Location
+DiaryNoEvent: No events at the moment
+DiaryAdd: Add to Calendar
+DiaryPoster: Poster
+
+Language: de
+DiaryDay: Tag
+DiaryHour: Uhr
+DiaryPlace: Ort
+DiaryNoEvent: Zur Zeit keine Veranstaltungen
+DiaryAdd: Zum Kalender hinzufügen
+DiaryPoster: Plakat
+
+Language: fr
+DiaryDay: Jour
+DiaryHour: Heure
+DiaryPlace: Place
+DiaryNoEvent: Aucun évènement pour le moment
+DiaryAdd: Ajouter au calendrier
+DiaryPoster: Affiche
+
+Language: it
+DiaryDay: Giorno
+DiaryHour: Ora
+DiaryPlace: Luogo
+DiaryNoEvent: Nessun evento per il momento
+DiaryAdd: Aggiungi al calendario
+DiaryPoster: Locandina
+
+Language: es
+DiaryDay: Día
+DiaryHour: Hora
+DiaryPlace: Lugar
+DiaryNoEvent: No hay eventos por el momento
+DiaryAdd: Añadir al calendario
+DiaryPoster: Cartel
+
+Language: nl
+DiaryDay: Dag
+DiaryHour: Uur
+DiaryPlace: Plaats
+DiaryNoEvent: Op dit moment geen evenement
+DiaryAdd: Toevoegen aan kalender
+DiaryPoster: Aanplakbiljet
+
+Language: pt
+DiaryDay: Dia
+DiaryHour: Hora
+DiaryPlace: Lugar
+DiaryNoEvent: Nenhum evento no momento
+DiaryAdd: Adicionar ao calendário
+DiaryPoster: Cartaz
+

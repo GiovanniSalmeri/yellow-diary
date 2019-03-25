@@ -1,0 +1,36 @@
+---
+date: 2019-03-15
+start: 12:00
+end: 13:00
+label: michelangelo
+place: Palazzo delle Esposizioni, [Via Nazionale 194, Roma]
+description: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+tags: art rinascimento
+
+---
+date: 2019-03-03
+start: 10:00
+end: 12:00
+label: giotto
+place: Vatican Museums, Viale Vaticano 51, Città del Vaticano [41.906389,12.454444]
+description: Duis aute irure **dolor** in reprehenderit *in voluptate velit esse* cillum dolore eu fugiat nulla pariatur
+tags: art
+
+---
+date: 2019-07-21
+start: 16:00
+end: 18:30
+label: boccioni
+place: Galleria degli Uffizi, Piazzale degli Uffizi 6, Firenze [43.7684,11.2556]
+description: Lorem ipsum dolor sit amet, *consectetur adipisicing elit,* sed do eiusmod tempor incididunt ut labore et dolore magna pizza. More informations at http://example.org/boccioni/
+tags: art futurism
+
+---
+date: 2019-08-13
+start: 15:00
+end: 17:00
+label: caravaggio
+place: University of Rome Tor Vergata, Faculty of Humanities, [Via Columbia 1, Roma]
+description: *Excepteur sint occaecat cupidatat non proident,* sunt in culpa qui officia deserunt **mollit anim** id est laborum.
+tags: art
+

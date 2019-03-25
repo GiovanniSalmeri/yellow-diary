@@ -1,0 +1,34 @@
+ul.diary {
+    padding-left: 0;
+    list-style-type: none;
+    font-size: 95%;
+    overflow: auto;
+}
+
+ul.diary.past {
+    color: #999999;
+}
+
+ul.diary li {
+    padding: 5px 0px 5px 0px;
+    margin-bottom: 10px;
+    border-top: solid 1px #C7C7C7;
+    clear: both;
+}
+
+ul.diary li div {
+    margin-left: 160px;
+}
+
+ul.diary.past div.add {
+    display: none;
+}
+
+ul.diary li div.poster {
+    float: left;
+    margin: 0 10px 0 0px;
+}
+
+ul.diary.past li div.poster {
+    opacity: 0.6;
+}

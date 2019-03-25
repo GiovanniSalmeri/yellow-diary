@@ -1,0 +1,53 @@
+ul.diary {
+    padding-left: 0;
+    list-style-type: none;
+    overflow: auto;
+}
+
+ul.diary li {
+    border-top: solid #C7C7C7 1px;
+    border-bottom: solid silver 1px;
+    padding: 5px 5px 5px 75px;
+    margin-bottom: 10px;
+    clear: both;
+}
+
+ul.diary li div.date {
+    width: 60px;
+    height: 60px;
+    margin-left: -70px;
+    float: left;
+}
+
+ul.diary li div.poster {
+    float: right;
+    margin-bottom: 5px;
+}
+
+ul.diary.future li div.date {
+    background-color: #FCF0AD;
+}
+
+ul.diary.past li div.date {
+    background-color: #C7C7C7;
+}
+
+ul.diary li div.date b {
+    display: none;
+}
+
+ul.diary li div.date span {
+    display: block;
+    text-align: center;
+}
+
+ul.diary li div.date span.wday, ul.diary li div.date span.month {
+    font-size: 12px;
+    line-height: 15px;
+}
+
+ul.diary li div.date span.mday {
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 25px;
+}
