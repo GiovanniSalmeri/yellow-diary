@@ -44,8 +44,8 @@ Create a `[diary]` shortcut.
 The following arguments are available, all but the first argument are optional:
 
 `Location` = filename of events list to show  
-`TimeSpan` = show `future` or `past` events  
-`Max` = maximum number of events to show  
+`TimeSpan` (default: `future`) = show `future` or `past` events  
+`Max` = maximum number of events to show, 0 for unlimited  
 `Tags` = show only events with any of the tags, wrap multiple tags into quotes  
 
 Note: since the year of the events is not displayed, keep the events of each year in a different file and provide with an appropriate heading the page where you embed the diary.
