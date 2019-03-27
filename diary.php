@@ -133,7 +133,7 @@ class YellowDiary {
                     if ($this->yellow->system->get("diaryCalendar")) {
                         $calName = $this->yellow->system->get("diaryCalendarDir").$eventId.".ics";
                         if (!@filemtime($calName) || filemtime($calName) < filemtime($eventListName)) {
-                            $fileHandle = fopen($calName, "w");
+                            $fileHandle = @fopen($calName, "w");
                             fwrite($fileHandle, $this->getCalendar($event, $eventId, $eventPlaceGeo, $eventTags));
                             fclose($fileHandle);
                         }
@@ -233,7 +233,7 @@ class YellowDiary {
     }
     function geolocation($address) {
         $cacheFile = $this->yellow->system->get("extensionDir")."openstreetmap.csv";
-        $fileHandle = fopen($cacheFile, "r");
+        $fileHandle = @fopen($cacheFile, "r");
         if ($fileHandle) {
             while ($data = fgetcsv($fileHandle)) {
                 $cache[$data[0]] = array($data[1], $data[2]);
