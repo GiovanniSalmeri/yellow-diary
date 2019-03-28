@@ -72,8 +72,8 @@ class YellowDiary {
                     $posterLink = null;
                     $pdfName = $this->yellow->system->get("diaryPosterDir").$eventId.".pdf";
                     $thumbName = $this->yellow->system->get("diaryThumbnailDir").$eventId.".jpg";
-                    $pdfLoc = $this->yellow->system->get("diaryPosterLocation").$eventId.".pdf";
-                    $thumbLoc = $this->yellow->system->get("diaryThumbnailLocation").$eventId.".jpg";
+                    $pdfLoc = $this->yellow->system->get("serverBase").$this->yellow->system->get("diaryPosterLocation").$eventId.".pdf";
+                    $thumbLoc = $this->yellow->system->get("serverBase").$this->yellow->system->get("diaryThumbnailLocation").$eventId.".jpg";
                     if (@filemtime($pdfName)) {
                         if ($this->yellow->system->get("diaryThumbnail") && !@filemtime($thumbName) || filemtime($thumbName) < filemtime($pdfName)) {
                             if(extension_loaded('Imagick') && false) {
@@ -137,7 +137,7 @@ class YellowDiary {
                             fwrite($fileHandle, $this->getCalendar($event, $eventId, $eventPlaceGeo, $eventTags));
                             fclose($fileHandle);
                         }
-                        $calLoc = $this->yellow->system->get("diaryCalendarLocation").$eventId.".ics";
+                        $calLoc = $this->yellow->system->get("serverBase").$this->yellow->system->get("diaryCalendarLocation").$eventId.".ics";
                         $calLink = "<a class=\"calendar\" href=\"{$calLoc}\">".$this->yellow->text->getHtml("diaryAdd")."</a>";
                     }
 
