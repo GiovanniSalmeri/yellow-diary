@@ -91,13 +91,17 @@ class YellowDiary {
                         $thumbSize = getimagesize($thumbName);
                         if ($thumbSize[0] == THUMBWIDTH) {
                             $thumbAttr = $thumbSize[3];
-                        } elseif ($thumbSize[0] > 0) { // let the browser resize a custom thumbnail
-                            $thumbAttr = "width=\"".THUMBWIDTH."\" height=\"".floor($thumbSize[1]*THUMBWIDTH/$thumbSize[0])."\"";
+                        } elseif ($thumbSize[0] > 0) { // resize thumbnail
+                            $newHeight = floor($thumbSize[1]*THUMBWIDTH/$thumbSize[0]);
+                            $thumbAttr = "width=\"".THUMBWIDTH."\" height=\"".$newHeight."\"";
+                            if ($this->yellow->extensions->isExisting("image")) {
+                                list($thumbLoc, $THUMBWIDTH, $newHeight) =                             $this->yellow->extensions->get("image")->getImageInformation($this->yellow->system->get("diaryThumbnailDir").$eventId.".jpg", 150, $newHeight);
+                            }
                         }
                     }
                     if (@filemtime($thumbName)) {
-                        $posterLink = "<img src=\"$thumbLoc\" $thumbAttr alt=\"Poster\" />";
-                        if (@filemtime($pdfName)) $posterLink = "<a class=\"thumb\" href=\"$pdfLoc\">".$posterLink."</a>";
+                        $posterLink = "<img src=\"".htmlspecialchars($thumbLoc)."\" $thumbAttr alt=\"Poster\" />";
+                        if (@filemtime($pdfName)) $posterLink = "<a class=\"thumb\" href=\"".htmlspecialchars($pdfLoc)."\">".$posterLink."</a>";
                     }
 
                     // Geolocation and map link
@@ -138,7 +142,7 @@ class YellowDiary {
                             fclose($fileHandle);
                         }
                         $calLoc = $this->yellow->system->get("serverBase").$this->yellow->system->get("diaryCalendarLocation").$eventId.".ics";
-                        $calLink = "<a class=\"calendar\" href=\"{$calLoc}\">".$this->yellow->text->getHtml("diaryAdd")."</a>";
+                        $calLink = "<a class=\"calendar\" href=\"".htmlspecialchars($calLoc)."\">".$this->yellow->text->getHtml("diaryAdd")."</a>";
                     }
 
                     // Generate HTML
@@ -147,8 +151,8 @@ class YellowDiary {
                     $output .= "<div class=\"date\">$eventDate</div>\n";
                     $output .= "<div class=\"time\"><b>".$this->yellow->text->getHtml("diaryHour").":</b> ".
 ($event[1][0] == "0" ? substr($event[2], 1) : $event[1])."-".($event[2][0] == "0" ? substr($event[2], 1) : $event[2])."</div>\n";
-                    $output .= "<div class=\"place\"><b>".$this->yellow->text->getHtml("diaryPlace").":</b> ".($eventPlaceMap ? "<a class=\"popup\" href=\"$eventPlaceMap\">".$this->toHTML($event[4])."</a>" : $this->toHTML($event[4]))."</div>\n";
-                    $output .= "<div class=\"desc\">".$this->toHTML($event[5]). (@filemtime($pdfName) && (!@filemtime($thumbName) || !$this->yellow->system->get("diaryThumbnail")) ? " [<a href=\"{$pdfLoc}\">".$this->yellow->text->getHtml("diaryPoster")."</a>]" : ""). "</div>\n";
+                    $output .= "<div class=\"place\"><b>".$this->yellow->text->getHtml("diaryPlace").":</b> ".($eventPlaceMap ? "<a class=\"popup\" href=\"".htmlspecialchars($eventPlaceMap)."\">".$this->toHTML($event[4])."</a>" : $this->toHTML($event[4]))."</div>\n";
+                    $output .= "<div class=\"desc\">".$this->toHTML($event[5]). (@filemtime($pdfName) && (!@filemtime($thumbName) || !$this->yellow->system->get("diaryThumbnail")) ? " [<a href=\"".htmlspecialchars($pdfLoc)."\">".$this->yellow->text->getHtml("diaryPoster")."</a>]" : ""). "</div>\n";
                     if ($this->yellow->system->get("diaryCalendar")) $output .= "<div class=\"add\">$calLink</div>\n";
                     $output .= "</li>\n";
                     $eventsShown += 1;
