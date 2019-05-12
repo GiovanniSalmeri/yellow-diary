@@ -134,7 +134,7 @@ class YellowDiary {
 
                     // Generate iCalendar file
                     $calLink = null;
-                    if ($this->yellow->system->get("diaryCalendar")) {
+                    if ($timeSpan == "future" && $this->yellow->system->get("diaryCalendar")) {
                         $calName = $this->yellow->system->get("diaryCalendarDir").$eventId.".ics";
                         if (!@filemtime($calName) || filemtime($calName) < filemtime($eventListName)) {
                             $fileHandle = @fopen($calName, "w");
@@ -153,7 +153,7 @@ class YellowDiary {
 ($event[1][0] == "0" ? substr($event[1], 1) : $event[1])."-".($event[2][0] == "0" ? substr($event[2], 1) : $event[2])."</div>\n";
                     $output .= "<div class=\"place\"><b>".$this->yellow->text->getHtml("diaryPlace").":</b> ".($eventPlaceMap ? "<a class=\"popup\" href=\"".htmlspecialchars($eventPlaceMap)."\">".$this->toHTML($event[4])."</a>" : $this->toHTML($event[4]))."</div>\n";
                     $output .= "<div class=\"desc\">".$this->toHTML($event[5]). (@filemtime($pdfName) && (!@filemtime($thumbName) || !$this->yellow->system->get("diaryThumbnail")) ? " [<a href=\"".htmlspecialchars($pdfLoc)."\">".$this->yellow->text->getHtml("diaryPoster")."</a>]" : ""). "</div>\n";
-                    if ($this->yellow->system->get("diaryCalendar")) $output .= "<div class=\"add\">$calLink</div>\n";
+                    if ($timeSpan == "future" && $this->yellow->system->get("diaryCalendar")) $output .= "<div class=\"add\">$calLink</div>\n";
                     $output .= "</li>\n";
                     $eventsShown += 1;
                 }
