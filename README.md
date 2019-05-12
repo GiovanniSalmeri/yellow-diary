@@ -35,7 +35,7 @@ Events can be written also in a `.tsv` or a `.csv` format (in this latter place 
 
 To add a poster to an event (e.g. with the complete programme), put it in `media/diary/posters/` with the name `YYYY-MM-DD-label.pdf`. To add an image different from the poster thumbnail, put it in `media/diary/thumbnail/` with the name `YYYY-MM-DD-label.jpg` and a timestamp newer than that of the poster.
 
-In `place` and `description`, use `*` for italic, `**` for bold, `\n` for newline. In `place`, enclose an address in square brackets (e.g. `Galleria degli Uffizi, [Piazzale degli Uffizi 6, Firenze]`), or write GPS coordinates in brackets (e.g. `Galleria degli Uffizi, Piazzale degli Uffizi 6, Firenze [43.7684,11.2556]`), in order to add a link to a pop-up map.
+In `place` and `description`, use `*` for italic, `**` for bold, `[text](URL)` for linking, `\n` for newline. Other URLs and email addresses are autolinked.  In `place`, enclose an address in square brackets (e.g. `Galleria degli Uffizi, [Piazzale degli Uffizi 6, Firenze]`), or write GPS coordinates in brackets (e.g. `Galleria degli Uffizi, Piazzale degli Uffizi 6, Firenze [43.7684,11.2556]`), in order to add a link to a pop-up map.
 
 ## How to embed a diary
 

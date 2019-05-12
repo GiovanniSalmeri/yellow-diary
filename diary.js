@@ -1,3 +1,4 @@
+"use strict";
 document.addEventListener("DOMContentLoaded", function() {
     var links = document.getElementsByClassName("popup");
     for (var i = 0; i < links.length; i++) {
