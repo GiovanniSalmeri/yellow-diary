@@ -68,7 +68,7 @@ class YellowDiary {
                     $eventDate = strftime("<b>".$this->yellow->text->getHtml("diaryDay").":</b> <span class=\"wday\">$locWday</span> <span class=\"mday\">%-d</span> <span class=\"month\">$locMonth</span>", $eventTime);
 
                     // Poster thumbnail and link
-                    define (THUMBWIDTH, 150);
+                    define ("THUMBWIDTH", 150);
                     $posterLink = null;
                     $pdfName = $this->yellow->system->get("diaryPosterDir").$eventId.".pdf";
                     $thumbName = $this->yellow->system->get("diaryThumbnailDir").$eventId.".jpg";
@@ -107,8 +107,8 @@ class YellowDiary {
                     // Geolocation and map link
                     $eventPlaceGeo = $eventPlaceMap = null;
                     if (preg_match("/^(.*?)\[(.+?)\](.*)/", $event[4], $matches)) {
-                        define(GOOGLEMAPS, "https://www.google.com/maps/place/");
-                        define(OSM, "https://www.openstreetmap.org/#map=17/");
+                        define("GOOGLEMAPS", "https://www.google.com/maps/place/");
+                        define("OSM", "https://www.openstreetmap.org/#map=17/");
                         if (substr($matches[2], 0, 4) == "geo:") $matches[2] = (substr($address, 4));
                         list($lat, $lon) = explode(",", explode(";", $matches[2])[0]);
                         $lat = trim($lat); $lon = trim($lon);
