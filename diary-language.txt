@@ -5,7 +5,7 @@ DiaryDay: Day
 DiaryHour: Hour
 DiaryPlace: Location
 DiaryNoEvent: No events at the moment
-DiaryAdd: Add to Calendar
+DiaryAdd: Add to Your Calendar
 DiaryPoster: Poster
 
 Language: de
@@ -13,7 +13,7 @@ DiaryDay: Tag
 DiaryHour: Uhr
 DiaryPlace: Ort
 DiaryNoEvent: Zur Zeit keine Veranstaltungen
-DiaryAdd: Zum Kalender hinzufügen
+DiaryAdd: Zu deinem Kalender hinzufügen
 DiaryPoster: Plakat
 
 Language: fr
@@ -21,7 +21,7 @@ DiaryDay: Jour
 DiaryHour: Heure
 DiaryPlace: Place
 DiaryNoEvent: Aucun évènement pour le moment
-DiaryAdd: Ajouter au calendrier
+DiaryAdd: Ajouter à votre calendrier
 DiaryPoster: Affiche
 
 Language: it
@@ -29,7 +29,7 @@ DiaryDay: Giorno
 DiaryHour: Ora
 DiaryPlace: Luogo
 DiaryNoEvent: Nessun evento per il momento
-DiaryAdd: Aggiungi al calendario
+DiaryAdd: Aggiungi al tuo calendario
 DiaryPoster: Locandina
 
 Language: es
@@ -37,7 +37,7 @@ DiaryDay: Día
 DiaryHour: Hora
 DiaryPlace: Lugar
 DiaryNoEvent: No hay eventos por el momento
-DiaryAdd: Añadir al calendario
+DiaryAdd: Añadir a tu calendario
 DiaryPoster: Cartel
 
 Language: nl
@@ -45,7 +45,7 @@ DiaryDay: Dag
 DiaryHour: Uur
 DiaryPlace: Plaats
 DiaryNoEvent: Op dit moment geen evenement
-DiaryAdd: Toevoegen aan kalender
+DiaryAdd: Toevoegen aan je kalender
 DiaryPoster: Aanplakbiljet
 
 Language: pt
@@ -53,6 +53,5 @@ DiaryDay: Dia
 DiaryHour: Hora
 DiaryPlace: Lugar
 DiaryNoEvent: Nenhum evento no momento
-DiaryAdd: Adicionar ao calendário
+DiaryAdd: Adicionar ao seu calendário
 DiaryPoster: Cartaz
-
