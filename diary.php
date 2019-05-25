@@ -68,7 +68,7 @@ class YellowDiary {
                     $eventDate = strftime("<b>".$this->yellow->text->getHtml("diaryDay").":</b> <span class=\"wday\">$locWday</span> <span class=\"mday\">%-d</span> <span class=\"month\">$locMonth</span>", $eventTime);
 
                     // Poster thumbnail and link
-                    define ("THUMBWIDTH", 150);
+                    define (THUMBWIDTH, 150);
                     $posterLink = null;
                     $pdfName = $this->yellow->system->get("diaryPosterDir").$eventId.".pdf";
                     $thumbName = $this->yellow->system->get("diaryThumbnailDir").$eventId.".jpg";
@@ -280,6 +280,9 @@ class YellowDiary {
         $output .= "DTEND:".gmstrftime("%Y%m%dT%H%M%SZ", strtotime($event[0]." ".$event[2]))."\r\n";
         $output .= $this->fold("LOCATION:".$event[4])."\r\n";
         if ($eventPlaceGeo) $output .= "GEO:".$eventPlaceGeo."\r\n";
+        if (preg_match("/\*(.*?)\*/", $event[5], $matches)) {
+             $output .= $this->fold("SUMMARY:".$matches[1])."\r\n";
+        }
         $output .= $this->fold("DESCRIPTION:".$event[5])."\r\n";
         if (@filemtime($pdfName) && $this->yellow->system->get("diaryThumbnailDir")) $output .= "ATTACH:".$this->yellow->system->get("serverBase").$pdfLoc."\r\n";
         if ($eventTags) $output .= $this->fold("CATEGORIES:".implode(",",$eventTags))."\r\n";
