@@ -68,7 +68,7 @@ class YellowDiary {
                     $eventDate = strftime("<b>".$this->yellow->text->getHtml("diaryDay").":</b> <span class=\"wday\">$locWday</span> <span class=\"mday\">%-d</span> <span class=\"month\">$locMonth</span>", $eventTime);
 
                     // Poster thumbnail and link
-                    define (THUMBWIDTH, 150);
+                    define("THUMBWIDTH", 150);
                     $posterLink = null;
                     $pdfName = $this->yellow->system->get("diaryPosterDir").$eventId.".pdf";
                     $thumbName = $this->yellow->system->get("diaryThumbnailDir").$eventId.".jpg";
