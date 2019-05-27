@@ -6,8 +6,7 @@ ul.diary {
 
 ul.diary li {
     border-top: solid #ddd 1px;
-    border-bottom: solid #ddd 1px;
-    padding: 5px 5px 5px 75px;
+    padding: 5px 0px 5px 70px;
     margin-bottom: 10px;
     clear: both;
 }
