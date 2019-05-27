@@ -63,12 +63,11 @@ class YellowDiary {
                 if ((($timeSpan == "future" && $eventTime > time()) || ($timeSpan == "past" && $eventTime <= time())) && (!$tags || array_intersect($eventTags, $tags))) {
 
                     // Human readable event date
-                    $locMonth = $dateMonths[getdate($eventTime)["mon"]-1];
-                    $locWday = $dateWeekdays[(getdate($eventTime)["wday"]+6) % 7];
-                    $eventDate = strftime("<b>".$this->yellow->text->getHtml("diaryDay").":</b> <span class=\"wday\">$locWday</span> <span class=\"mday\">%-d</span> <span class=\"month\">$locMonth</span>", $eventTime);
+                    $getDate = getdate($eventTime);
+                    $eventDate = "<b>".$this->yellow->text->getHtml("diaryDay").":</b> <span class=\"wday\">".$dateWeekdays[($getDate["wday"]+6) % 7]."</span> <span class=\"mday\">".$getDate["mday"]."</span> <span class=\"month\">".$dateMonths[$getDate["mon"]-1]."</span>";
 
                     // Poster thumbnail and link
-                    define("THUMBWIDTH", 150);
+                    define ("THUMBWIDTH", 150);
                     $posterLink = null;
                     $pdfName = $this->yellow->system->get("diaryPosterDir").$eventId.".pdf";
                     $thumbName = $this->yellow->system->get("diaryThumbnailDir").$eventId.".jpg";
@@ -149,7 +148,8 @@ class YellowDiary {
                     $output .= "<li>\n";
                     if (@filemtime($pdfName) || @filemtime($thumbName) && $this->yellow->system->get("diaryThumbnail")) $output .= "<div class=\"poster\">$posterLink</div>\n";
                     $output .= "<div class=\"date\">$eventDate</div>\n";
-                    $output .= "<div class=\"time\"><b>".$this->yellow->text->getHtml("diaryHour").":</b> ". ($event[1][0] == "0" ? substr($event[1], 1) : $event[1])."-".($event[2][0] == "0" ? substr($event[2], 1) : $event[2])."</div>\n";
+                    $output .= "<div class=\"time\"><b>".$this->yellow->text->getHtml("diaryHour").":</b> ".
+($event[1][0] == "0" ? substr($event[1], 1) : $event[1])."-".($event[2][0] == "0" ? substr($event[2], 1) : $event[2])."</div>\n";
                     $output .= "<div class=\"place\"><b>".$this->yellow->text->getHtml("diaryPlace").":</b> ".($eventPlaceMap ? "<a class=\"popup\" href=\"".htmlspecialchars($eventPlaceMap)."\">".$this->toHTML($event[4])."</a>" : $this->toHTML($event[4]))."</div>\n";
                     $output .= "<div class=\"desc\">".$this->toHTML($event[5]). (@filemtime($pdfName) && (!@filemtime($thumbName) || !$this->yellow->system->get("diaryThumbnail")) ? " [<a href=\"".htmlspecialchars($pdfLoc)."\">".$this->yellow->text->getHtml("diaryPoster")."</a>]" : ""). "</div>\n";
                     if ($timeSpan == "future" && $this->yellow->system->get("diaryCalendar")) $output .= "<div class=\"add\">$calLink</div>\n";
