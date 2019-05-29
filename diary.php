@@ -1,5 +1,5 @@
 <?php
-// Events extension
+// Diary extension
 // Copyright (c) 2019 Giovanni Salmeri
 // This file may be used and distributed under the terms of the public license.
 
