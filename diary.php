@@ -4,7 +4,7 @@
 // This file may be used and distributed under the terms of the public license.
 
 class YellowDiary {
-    const VERSION = "0.8.3";
+    const VERSION = "0.8.9";
     const TYPE = "feature";
     public $yellow;         //access to API
     public $siteId;         //site root (string)
@@ -71,8 +71,8 @@ class YellowDiary {
                     $posterLink = null;
                     $pdfName = $this->yellow->system->get("diaryPosterDir").$eventId.".pdf";
                     $thumbName = $this->yellow->system->get("diaryThumbnailDir").$eventId.".jpg";
-                    $pdfLoc = $this->yellow->system->get("serverBase").$this->yellow->system->get("diaryPosterLocation").$eventId.".pdf";
-                    $thumbLoc = $this->yellow->system->get("serverBase").$this->yellow->system->get("diaryThumbnailLocation").$eventId.".jpg";
+                    $pdfLoc = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("diaryPosterLocation").$eventId.".pdf";
+                    $thumbLoc = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("diaryThumbnailLocation").$eventId.".jpg";
                     if (@filemtime($pdfName)) {
                         if ($this->yellow->system->get("diaryThumbnail") && !@filemtime($thumbName) || filemtime($thumbName) < filemtime($pdfName)) {
                             if(extension_loaded('Imagick') && false) {
@@ -140,7 +140,7 @@ class YellowDiary {
                             fwrite($fileHandle, $this->getCalendar($event, $eventId, $eventPlaceGeo, $eventTags));
                             fclose($fileHandle);
                         }
-                        $calLoc = $this->yellow->system->get("serverBase").$this->yellow->system->get("diaryCalendarLocation").$eventId.".ics";
+                        $calLoc = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("diaryCalendarLocation").$eventId.".ics";
                         $calLink = "<a class=\"calendar\" href=\"".htmlspecialchars($calLoc)."\">".$this->yellow->text->getHtml("diaryAdd")."</a>";
                     }
 
@@ -235,7 +235,7 @@ class YellowDiary {
         }
     }
     function geolocation($address) {
-        $cacheFile = $this->yellow->system->get("extensionDir")."openstreetmap.csv";
+        $cacheFile = $this->yellow->system->get("coreExtensionDir")."openstreetmap.csv";
         $fileHandle = @fopen($cacheFile, "r");
         if ($fileHandle) {
             while ($data = fgetcsv($fileHandle)) {
@@ -283,7 +283,7 @@ class YellowDiary {
              $output .= $this->fold("SUMMARY:".$matches[1])."\r\n";
         }
         $output .= $this->fold("DESCRIPTION:".$event[5])."\r\n";
-        if (@filemtime($pdfName) && $this->yellow->system->get("diaryThumbnailDir")) $output .= "ATTACH:".$this->yellow->system->get("serverBase").$pdfLoc."\r\n";
+        if (@filemtime($pdfName) && $this->yellow->system->get("diaryThumbnailDir")) $output .= "ATTACH:".$this->yellow->system->get("coreServerBase").$pdfLoc."\r\n";
         if ($eventTags) $output .= $this->fold("CATEGORIES:".implode(",",$eventTags))."\r\n";
         $output .= "END:VEVENT\r\n";
         $output .= "END:VCALENDAR\r\n";
@@ -311,7 +311,7 @@ class YellowDiary {
     public function onParsePageExtra($page, $name) {
         $output = null;
         if ($name=="header") {
-            $extensionLocation = $this->yellow->system->get("serverBase").$this->yellow->system->get("extensionLocation");
+            $extensionLocation = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("coreExtensionLocation");
             $style = $this->yellow->system->get("diaryStyle");
             $output .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"{$extensionLocation}diary-{$style}.css\" />\n";
             $output .= "<script type=\"text/javascript\" defer=\"defer\" src=\"{$extensionLocation}diary.js\"></script>\n";

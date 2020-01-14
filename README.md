@@ -1,5 +1,5 @@
-Diary 0.8.3
-==========
+# Diary 0.8.9
+
 Events Diary.
 
 <p align="center"><img src="diary-screenshot.png?raw=true" alt="Screenshot"></p>
