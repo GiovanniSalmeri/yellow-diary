@@ -1,10 +1,10 @@
 <?php
 // Diary extension
-// Copyright (c) 2019 Giovanni Salmeri
+// Copyright (c) 2019 Giovanni Salmeri, https://github.com/GiovanniSalmeri/yellow-diary
 // This file may be used and distributed under the terms of the public license.
 
 class YellowDiary {
-    const VERSION = "0.8.9";
+    const VERSION = "0.8.10";
     const TYPE = "feature";
     public $yellow;         //access to API
     public $siteId;         //site root (string)
@@ -39,8 +39,8 @@ class YellowDiary {
             $tags = preg_split("/[\s,]+/", $tags, 0, PREG_SPLIT_NO_EMPTY);
             $eventListName = $this->yellow->system->get("diaryDir").$eventList;
 
-            $dateMonths = preg_split("/\s*,\s*/", $this->yellow->text->get("dateMonths"));
-            $dateWeekdays = preg_split("/\s*,\s*/", $this->yellow->text->get("dateWeekdays"));
+            $dateMonths = preg_split("/\s*,\s*/", $this->yellow->text->get("coreDateMonths"));
+            $dateWeekdays = preg_split("/\s*,\s*/", $this->yellow->text->get("coreDateWeekdays"));
 
             // Read and sort events
             $events = $this->parseEvents($eventListName);
@@ -94,7 +94,7 @@ class YellowDiary {
                             $newHeight = floor($thumbSize[1]*THUMBWIDTH/$thumbSize[0]);
                             $thumbAttr = "width=\"".THUMBWIDTH."\" height=\"".$newHeight."\"";
                             if ($this->yellow->extensions->isExisting("image")) {
-                                list($thumbLoc, $THUMBWIDTH, $newHeight) =                             $this->yellow->extensions->get("image")->getImageInformation($this->yellow->system->get("diaryThumbnailDir").$eventId.".jpg", 150, $newHeight);
+                                list($thumbLoc, $THUMBWIDTH, $newHeight) = $this->yellow->extensions->get("image")->getImageInformation($this->yellow->system->get("diaryThumbnailDir").$eventId.".jpg", 150, $newHeight);
                             }
                         }
                     }

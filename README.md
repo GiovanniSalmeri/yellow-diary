@@ -1,4 +1,4 @@
-# Diary 0.8.9
+# Diary 0.8.10
 
 Events Diary.
 
