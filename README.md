@@ -1,16 +1,8 @@
-# Diary 0.8.10
+# Diary 0.8.16
 
 Events Diary.
 
 <p align="center"><img src="diary-screenshot.png?raw=true" alt="Screenshot"></p>
-
-## How to install extension
-
-1. [Download and install Datenstrom Yellow](https://github.com/datenstrom/yellow/).
-2. [Download extension](../../archive/master.zip). If you are using Safari, right click and select 'Download file as'.
-3. Copy `diary.zip` into your `system/extensions` folder.
-
-To uninstall delete the [extension files](extension.ini).
 
 ## How to create an events list
 
@@ -50,6 +42,19 @@ The following arguments are available, all but the first argument are optional:
 
 Note: since the year of the events is not displayed, keep the events of each year in a different file and provide with an appropriate heading the page where you embed the diary.
 
+## Example
+
+Showing the diary of all future events:
+
+    [diary events2019.psv]
+    [diary events2019.yaml]
+
+Showing the diary with various options:
+
+    [diary events2019.psv past]
+    [diary events2019.psv future 5]
+    [diary events2019.yaml future 0 philosophy]
+
 ## Settings
 
 The following settings can be configured in file `system/settings/system.ini`.
@@ -68,19 +73,10 @@ The following settings can be configured in file `system/settings/system.ini`.
 
 If you want to add a new `fancy` style, write a `diary-fancy.css`  file and put into the `system/extensions` folder. Do not modify the standard styles, since they will be overwritten in case of update of the extension.
 
-## Examples
+## Installation
 
-Showing the diary of all future events:
-
-    [diary events2019.psv]
-    [diary events2019.yaml]
-
-Showing the diary with various options:
-
-    [diary events2019.psv past]
-    [diary events2019.psv future 5]
-    [diary events2019.yaml future 0 philosophy]
+[Download extension](https://github.com/GiovanniSalmeri/yellow-diary/archive/master.zip) and copy zip file into your `system/extensions` folder. Right click if you use Safari.
 
 ## Developer
 
-Giovanni Salmeri.
+Giovanni Salmeri. [Get help](https://github.com/GiovanniSalmeri/yellow-diary/issues).

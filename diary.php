@@ -1,30 +1,29 @@
 <?php
-// Diary extension
-// Copyright (c) 2019 Giovanni Salmeri, https://github.com/GiovanniSalmeri/yellow-diary
+// Diary extension, https://github.com/GiovanniSalmeri/yellow-diary
+// Copyright (c) 2019-2021 Giovanni Salmeri
 // This file may be used and distributed under the terms of the public license.
 
 class YellowDiary {
-    const VERSION = "0.8.10";
-    const TYPE = "feature";
+    const VERSION = "0.8.16";
     public $yellow;         //access to API
     public $siteId;         //site root (string)
     
     // Handle initialisation
     public function onLoad($yellow) {
         $this->yellow = $yellow;
-        $this->yellow->system->setDefault("diaryDir", "media/diary/");
+        $this->yellow->system->setDefault("diaryDirectory", "media/diary/");
         $this->yellow->system->setDefault("diaryPosterLocation", "/media/diary/posters/");
-        $this->yellow->system->setDefault("diaryPosterDir", "media/diary/posters/");
+        $this->yellow->system->setDefault("diaryPosterDirectory", "media/diary/posters/");
         $this->yellow->system->setDefault("diaryThumbnail", "1");
         $this->yellow->system->setDefault("diaryThumbnailLocation", "/media/diary/thumbnails/");
-        $this->yellow->system->setDefault("diaryThumbnailDir", "media/diary/thumbnails/");
+        $this->yellow->system->setDefault("diaryThumbnailDirectory", "media/diary/thumbnails/");
         $this->yellow->system->setDefault("diaryMaps", "openstreetmap");
         $this->yellow->system->setDefault("diaryCalendar", "1");
         $this->yellow->system->setDefault("diaryCalendarLocation", "/media/diary/icalendar/");
-        $this->yellow->system->setDefault("diaryCalendarDir", "media/diary/icalendar/");
+        $this->yellow->system->setDefault("diaryCalendarDirectory", "media/diary/icalendar/");
         $this->yellow->system->setDefault("diaryStyle", "plain");
         $this->siteId = $this->getSiteId();
-        foreach (["diaryDir", "diaryPosterDir", "diaryThumbnailDir", "diaryCalendarDir"] as $dir) {
+        foreach (["diaryDirectory", "diaryPosterDirectory", "diaryThumbnailDirectory", "diaryCalendarDirectory"] as $dir) {
             $path = $this->yellow->system->get($dir);
             if (!empty($path) && !is_dir($path)) @mkdir($path, 0777, true);
         }
@@ -34,13 +33,13 @@ class YellowDiary {
     public function onParseContentShortcut($page, $name, $text, $type) {
         $output = null;
         if ($name=="diary" && ($type=="block" || $type=="inline")) {
-            list($eventList, $timeSpan, $max, $tags) = $this->yellow->toolbox->getTextArgs($text);
+            list($eventList, $timeSpan, $max, $tags) = $this->yellow->toolbox->getTextArguments($text);
             if ($timeSpan != "past") $timeSpan = "future";
             $tags = preg_split("/[\s,]+/", $tags, 0, PREG_SPLIT_NO_EMPTY);
-            $eventListName = $this->yellow->system->get("diaryDir").$eventList;
+            $eventListName = $this->yellow->system->get("diaryDirectory").$eventList;
 
-            $dateMonths = preg_split("/\s*,\s*/", $this->yellow->text->get("coreDateMonths"));
-            $dateWeekdays = preg_split("/\s*,\s*/", $this->yellow->text->get("coreDateWeekdays"));
+            $dateMonths = preg_split("/\s*,\s*/", $this->yellow->language->getText("coreDateMonths"));
+            $dateWeekdays = preg_split("/\s*,\s*/", $this->yellow->language->getText("coreDateWeekdays"));
 
             // Read and sort events
             $events = $this->parseEvents($eventListName);
@@ -64,13 +63,13 @@ class YellowDiary {
 
                     // Human readable event date
                     $getDate = getdate($eventTime);
-                    $eventDate = "<b>".$this->yellow->text->getHtml("diaryDay").":</b> <span class=\"wday\">".$dateWeekdays[($getDate["wday"]+6) % 7]."</span> <span class=\"mday\">".$getDate["mday"]."</span> <span class=\"month\">".$dateMonths[$getDate["mon"]-1]."</span>";
+                    $eventDate = "<b>".$this->yellow->language->getTextHtml("diaryDay").":</b> <span class=\"wday\">".$dateWeekdays[($getDate["wday"]+6) % 7]."</span> <span class=\"mday\">".$getDate["mday"]."</span> <span class=\"month\">".$dateMonths[$getDate["mon"]-1]."</span>";
 
                     // Poster thumbnail and link
                     define ("THUMBWIDTH", 150);
                     $posterLink = null;
-                    $pdfName = $this->yellow->system->get("diaryPosterDir").$eventId.".pdf";
-                    $thumbName = $this->yellow->system->get("diaryThumbnailDir").$eventId.".jpg";
+                    $pdfName = $this->yellow->system->get("diaryPosterDirectory").$eventId.".pdf";
+                    $thumbName = $this->yellow->system->get("diaryThumbnailDirectory").$eventId.".jpg";
                     $pdfLoc = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("diaryPosterLocation").$eventId.".pdf";
                     $thumbLoc = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("diaryThumbnailLocation").$eventId.".jpg";
                     if (@filemtime($pdfName)) {
@@ -93,8 +92,8 @@ class YellowDiary {
                         } elseif ($thumbSize[0] > 0) { // resize thumbnail
                             $newHeight = floor($thumbSize[1]*THUMBWIDTH/$thumbSize[0]);
                             $thumbAttr = "width=\"".THUMBWIDTH."\" height=\"".$newHeight."\"";
-                            if ($this->yellow->extensions->isExisting("image")) {
-                                list($thumbLoc, $THUMBWIDTH, $newHeight) = $this->yellow->extensions->get("image")->getImageInformation($this->yellow->system->get("diaryThumbnailDir").$eventId.".jpg", 150, $newHeight);
+                            if ($this->yellow->extension->isExisting("image")) {
+                                list($thumbLoc, $THUMBWIDTH, $newHeight) = $this->yellow->extension->get("image")->getImageInformation($this->yellow->system->get("diaryThumbnailDirectory").$eventId.".jpg", 150, $newHeight);
                             }
                         }
                     }
@@ -134,24 +133,24 @@ class YellowDiary {
                     // Generate iCalendar file
                     $calLink = null;
                     if ($timeSpan == "future" && $this->yellow->system->get("diaryCalendar")) {
-                        $calName = $this->yellow->system->get("diaryCalendarDir").$eventId.".ics";
+                        $calName = $this->yellow->system->get("diaryCalendarDirectory").$eventId.".ics";
                         if (!@filemtime($calName) || filemtime($calName) < filemtime($eventListName)) {
                             $fileHandle = @fopen($calName, "w");
                             fwrite($fileHandle, $this->getCalendar($event, $eventId, $eventPlaceGeo, $eventTags));
                             fclose($fileHandle);
                         }
                         $calLoc = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("diaryCalendarLocation").$eventId.".ics";
-                        $calLink = "<a class=\"calendar\" href=\"".htmlspecialchars($calLoc)."\">".$this->yellow->text->getHtml("diaryAdd")."</a>";
+                        $calLink = "<a class=\"calendar\" href=\"".htmlspecialchars($calLoc)."\">".$this->yellow->language->getTextHtml("diaryAdd")."</a>";
                     }
 
                     // Generate HTML
                     $output .= "<li>\n";
                     if (@filemtime($pdfName) || @filemtime($thumbName) && $this->yellow->system->get("diaryThumbnail")) $output .= "<div class=\"poster\">$posterLink</div>\n";
                     $output .= "<div class=\"date\">$eventDate</div>\n";
-                    $output .= "<div class=\"time\"><b>".$this->yellow->text->getHtml("diaryHour").":</b> ".
+                    $output .= "<div class=\"time\"><b>".$this->yellow->language->getTextHtml("diaryHour").":</b> ".
 ($event[1][0] == "0" ? substr($event[1], 1) : $event[1])."-".($event[2][0] == "0" ? substr($event[2], 1) : $event[2])."</div>\n";
-                    $output .= "<div class=\"place\"><b>".$this->yellow->text->getHtml("diaryPlace").":</b> ".($eventPlaceMap ? "<a class=\"popup\" href=\"".htmlspecialchars($eventPlaceMap)."\">".$this->toHTML($event[4])."</a>" : $this->toHTML($event[4]))."</div>\n";
-                    $output .= "<div class=\"desc\">".$this->toHTML($event[5]). (@filemtime($pdfName) && (!@filemtime($thumbName) || !$this->yellow->system->get("diaryThumbnail")) ? " [<a href=\"".htmlspecialchars($pdfLoc)."\">".$this->yellow->text->getHtml("diaryPoster")."</a>]" : ""). "</div>\n";
+                    $output .= "<div class=\"place\"><b>".$this->yellow->language->getTextHtml("diaryPlace").":</b> ".($eventPlaceMap ? "<a class=\"popup\" href=\"".htmlspecialchars($eventPlaceMap)."\">".$this->toHTML($event[4])."</a>" : $this->toHTML($event[4]))."</div>\n";
+                    $output .= "<div class=\"desc\">".$this->toHTML($event[5]). (@filemtime($pdfName) && (!@filemtime($thumbName) || !$this->yellow->system->get("diaryThumbnail")) ? " [<a href=\"".htmlspecialchars($pdfLoc)."\">".$this->yellow->language->getTextHtml("diaryPoster")."</a>]" : ""). "</div>\n";
                     if ($timeSpan == "future" && $this->yellow->system->get("diaryCalendar")) $output .= "<div class=\"add\">$calLink</div>\n";
                     $output .= "</li>\n";
                     $eventsShown += 1;
@@ -159,7 +158,7 @@ class YellowDiary {
                 if ($max && $eventsShown >= $max) break; 
             }
             if ($eventsShown == 0) {
-                $output .= "<li>".$this->yellow->text->getHtml("diaryNoEvent")."</li>";
+                $output .= "<li>".$this->yellow->language->getTextHtml("diaryNoEvent")."</li>";
             }
             $output .= "</ul>\n";
         }
@@ -200,8 +199,7 @@ class YellowDiary {
                     } elseif ($line[0] == "#") {
                         continue;
                     } elseif ($currRec >= 0) {
-                        preg_match("/^(.*?):\s+(.*?)\s*$/", $line, $matches);
-                        if ($matches && isset($FIELD[$matches[1]])) {
+                        if (preg_match("/^(.*?):\s+(.*?)\s*$/", $line, $matches) && isset($FIELD[$matches[1]])) {
                             $events[$currRec][$FIELD[$matches[1]]] = $matches[2];
                         }
                     }
@@ -209,8 +207,7 @@ class YellowDiary {
             } elseif ($type == "txt") { // legacy
                 $pattern = "/^(\d+-\d+-\d+), ore ([\d:]+)-([\d:]+)(.?), ([^:]+): (.*)/";
                 while (($data = fgets($fileHandle)) !== false) {
-                    preg_match($pattern, $data, $matches);
-                    if ($matches) {
+                    if (preg_match($pattern, $data, $matches)) {
                         array_shift($matches);
                         $matches[4] = str_replace("((", "[", $matches[4]);
                         $matches[4] = str_replace("))", "]", $matches[4]);
@@ -235,7 +232,7 @@ class YellowDiary {
         }
     }
     function geolocation($address) {
-        $cacheFile = $this->yellow->system->get("coreExtensionDir")."openstreetmap.csv";
+        $cacheFile = $this->yellow->system->get("coreExtensionDirectory")."openstreetmap.csv";
         $fileHandle = @fopen($cacheFile, "r");
         if ($fileHandle) {
             while ($data = fgetcsv($fileHandle)) {
@@ -283,7 +280,7 @@ class YellowDiary {
              $output .= $this->fold("SUMMARY:".$matches[1])."\r\n";
         }
         $output .= $this->fold("DESCRIPTION:".$event[5])."\r\n";
-        if (@filemtime($pdfName) && $this->yellow->system->get("diaryThumbnailDir")) $output .= "ATTACH:".$this->yellow->system->get("coreServerBase").$pdfLoc."\r\n";
+        if (@filemtime($pdfName) && $this->yellow->system->get("diaryThumbnailDirectory")) $output .= "ATTACH:".$this->yellow->system->get("coreServerBase").$pdfLoc."\r\n";
         if ($eventTags) $output .= $this->fold("CATEGORIES:".implode(",",$eventTags))."\r\n";
         $output .= "END:VEVENT\r\n";
         $output .= "END:VCALENDAR\r\n";
@@ -303,8 +300,11 @@ class YellowDiary {
     }
 
     function getSiteId() {
-        preg_match("/^(.*)\/.*\.php$/", $_SERVER["SCRIPT_NAME"], $matches);
-        return "@".$_SERVER["SERVER_NAME"].$matches[1];
+        if (preg_match("/^(.*)\/.*\.php$/", $this->yellow->toolbox->getServer("SCRIPT_NAME"), $matches)) {
+	    return "@".$this->yellow->toolbox->getServer("SERVER_NAME").$matches[1];
+	} else {
+	    return "@".$this->yellow->toolbox->getServer("SERVER_NAME");
+	}
     }
 
     // Handle page extra data
