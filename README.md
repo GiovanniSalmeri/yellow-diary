@@ -57,7 +57,7 @@ Showing the diary with various options:
 
 ## Settings
 
-The following settings can be configured in file `system/settings/system.ini`.
+The following settings can be configured in file `system/extensions/yellow-system.ini`.
 
 `DiaryDir` (default: `media/diary/`) = directory for Diary files  
 `DiaryPosterLocation` (default: `/media/diary/posters/`) = location for posters  
