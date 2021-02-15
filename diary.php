@@ -253,6 +253,7 @@ class YellowDiary {
         return $cache[$address];
     }
 
+    // Minimal markdown
     function toHTML($text) {
         $text = htmlspecialchars($text);
         $text = preg_replace_callback('/\\\[\\\n]/', function($m) { return $m[0] == "\\\\" ? "\\" : "<br />\n"; }, $text);
@@ -264,41 +265,43 @@ class YellowDiary {
         return $text;
     }
 
+    // Build iCalendar object RFC 5545
     function getCalendar($event, $eventId, $eventPlaceGeo, $eventTags) {
+        $quote = function($string) { return '"'. str_replace(['^', '"'], ["^^", "^'"], $string) . '"'; }; // RFC 6868
+        $escape = function($string) { return addcslashes($string, '\,;'); };
+        $timeFormat = "Ymd\THis\Z";
+        $start = gmdate($timeFormat, strtotime($event[0]." ".$event[1]));
+        $end = gmdate($timeFormat, strtotime($event[0]." ".$event[2]));
+        $lines = [];
+        $lines[] ="BEGIN:VCALENDAR";
+        $lines[] ="PRODID:-//github.com/GiovanniSalmeri//NONSGML YellowMailer ".$this::VERSION."//EN";
+        $lines[] ="VERSION:2.0";
+        $lines[] ="METHOD:REQUEST";
+        $lines[] ="BEGIN:VEVENT";
+        $lines[] ="UID:".md5($eventId."@".$this->siteId); // more paranoiac than RFC 5545, less than RFC 7986
+        $lines[] ="DTSTAMP:".gmdate($timeFormat);
+        $lines[] ="DTSTART:".$start;
+        $lines[] ="DTEND:".$end;
+        $lines[] = "LOCATION:".$escape($event[4]);
+        if ($eventPlaceGeo) $lines[] ="GEO:".str_replace([",", " "], [";", ""], $ical['geo']);
+        if (preg_match("/\*(.*?)\*/", $event[5], $matches)) $lines[] = "SUMMARY:".$escape($matches[1]);
+        $lines[] = "DESCRIPTION:".$escape($event[5]);
+        if (@filemtime($pdfName) && $this->yellow->system->get("diaryThumbnailDirectory")) $lines[] = "ATTACH:".$this->yellow->system->get("coreServerBase").$pdfLoc;
+        if ($eventTags) $lines[] = "CATEGORIES:".implode(",",$eventTags);
+        $lines[] ="END:VEVENT";
+        $lines[] ="END:VCALENDAR";
         $output = null;
-        $output .= "BEGIN:VCALENDAR\r\n";
-        $output .= "PRODID:-//github.com/GiovanniSalmeri//NONSGML Yellow Diary".$this::VERSION."//EN\r\n";
-        $output .= "VERSION:2.0\r\n";
-        $output .= "BEGIN:VEVENT\r\n";
-        $output .= "UID:".sha1($eventId.$this->siteId)."\r\n"; // more paranoiac than RFC 5545, less than RFC 7986
-        $output .= "DTSTAMP:".gmstrftime("%Y%m%dT%H%M%SZ")."\r\n";
-        $output .= "DTSTART:".gmstrftime("%Y%m%dT%H%M%SZ", strtotime($event[0]." ".$event[1]))."\r\n";
-        $output .= "DTEND:".gmstrftime("%Y%m%dT%H%M%SZ", strtotime($event[0]." ".$event[2]))."\r\n";
-        $output .= $this->fold("LOCATION:".$event[4])."\r\n";
-        if ($eventPlaceGeo) $output .= "GEO:".$eventPlaceGeo."\r\n";
-        if (preg_match("/\*(.*?)\*/", $event[5], $matches)) {
-             $output .= $this->fold("SUMMARY:".$matches[1])."\r\n";
+        foreach ($lines as $line) {
+            while (strlen($line) > 1) {
+                $fragment = mb_strcut($line, 0, 73);
+                $line = " ".substr($line, strlen($fragment));
+                $output .= $fragment . "\r\n";
+            }
         }
-        $output .= $this->fold("DESCRIPTION:".$event[5])."\r\n";
-        if (@filemtime($pdfName) && $this->yellow->system->get("diaryThumbnailDirectory")) $output .= "ATTACH:".$this->yellow->system->get("coreServerBase").$pdfLoc."\r\n";
-        if ($eventTags) $output .= $this->fold("CATEGORIES:".implode(",",$eventTags))."\r\n";
-        $output .= "END:VEVENT\r\n";
-        $output .= "END:VCALENDAR\r\n";
         return $output;
     }
 
-    function fold($line) {
-        $foldedLine = null;
-        while (strlen($line) > 75) {
-            $start = 75;
-            while ($line[$start] > chr(127) && $line[$start] < chr(192)) $start -= 1; // do not break UTF-8
-            $foldedLine .= substr($line, 0, $start)."\r\n";
-            $line = " ".substr($line, $start);
-        }
-        $foldedLine .= $line;
-        return $foldedLine;
-    }
-
+    // Get a site identifier
     function getSiteId() {
         if (preg_match("/^(.*)\/.*\.php$/", $this->yellow->toolbox->getServer("SCRIPT_NAME"), $matches)) {
 	    return "@".$this->yellow->toolbox->getServer("SERVER_NAME").$matches[1];
