@@ -121,7 +121,7 @@ class YellowDiary {
                         } else {
                             $event[4] = $matches[1].$matches[2].$matches[3];
                             if ($this->yellow->system->get("diaryMaps") == "google") {
-                                $eventPlaceMap = GOOGLEMAPS.$matches[2];
+                                $eventPlaceMap = GOOGLEMAPS.rawurlencode($matches[2]);
                             } else {
                                 list($lat, $lon) = $this->geolocation($matches[2]);
                                 $eventPlaceGeo = $lat.";".$lon;
@@ -223,7 +223,7 @@ class YellowDiary {
     // The following code is from class YellowOpenStreetMap
     function nominatim($address) {
         $ua = ini_set("user_agent", "Yellow Diary extension ". $this::VERSION);
-        $nominatim = simplexml_load_file("https://nominatim.openstreetmap.org/search?format=xml&q=$address");
+        $nominatim = simplexml_load_file("https://nominatim.openstreetmap.org/search?format=xml&q=".rawurlencode($address));
         ini_set("user_agent", $ua);
         if ($nominatim) {
             $lat = (float)$nominatim->place["lat"];
