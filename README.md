@@ -71,7 +71,7 @@ The following settings can be configured in file `system/extensions/yellow-syste
 `DiaryCalendarDir` (default: `media/diary/icalendar/`) = directory for iCalendar files  
 `DiaryStyle` (default: `plain`) = diary style (you can choose between `plain`, `squared`, `rounded`)  
 
-If you want to add a new `fancy` style, write a `diary-fancy.css`  file and put into the `system/extensions` folder. Do not modify the standard styles, since they will be overwritten in case of update of the extension.
+If you want to add a new `fancy` style, write a `diary-fancy.css`  file and put into the `system/extensions` folder.
 
 ## Installation
 
