@@ -1,7 +1,5 @@
 <?php
 // Diary extension, https://github.com/GiovanniSalmeri/yellow-diary
-// Copyright (c) 2019-2021 Giovanni Salmeri
-// This file may be used and distributed under the terms of the public license.
 
 class YellowDiary {
     const VERSION = "0.8.16";

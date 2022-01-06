@@ -1,3 +1,5 @@
+/* Diary extension, https://github.com/GiovanniSalmeri/yellow-diary */
+
 "use strict";
 document.addEventListener("DOMContentLoaded", function() {
     var links = document.getElementsByClassName("popup");
