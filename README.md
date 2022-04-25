@@ -29,7 +29,7 @@ To add a poster to an event (e.g. with the complete programme), put it in `media
 
 In `place` and `description`, use `*` for italic, `**` for bold, `[text](URL)` for linking, `\n` for newline. Other URLs and email addresses are autolinked.  In `place`, enclose an address in square brackets (e.g. `Galleria degli Uffizi, [Piazzale degli Uffizi 6, Firenze]`), or write GPS coordinates in brackets (e.g. `Galleria degli Uffizi, Piazzale degli Uffizi 6, Firenze [43.7684,11.2556]`), in order to add a link to a pop-up map.
 
-## How to embed a diary
+## How to show a diary
 
 Create a `[diary]` shortcut.
 
