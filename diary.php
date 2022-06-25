@@ -36,7 +36,7 @@ class YellowDiary {
             $tags = preg_split("/[\s,]+/", $tags, 0, PREG_SPLIT_NO_EMPTY);
             $eventListName = $this->yellow->system->get("diaryDirectory").$eventList;
 
-            $dateMonths = preg_split("/\s*,\s*/", $this->yellow->language->getText("coreDateMonths"));
+            $dateMonths = preg_split("/\s*,\s*/", $this->yellow->language->getText("coreDateMonthsGenitive"));
             $dateWeekdays = preg_split("/\s*,\s*/", $this->yellow->language->getText("coreDateWeekdays"));
 
             // Read and sort events
