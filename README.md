@@ -79,4 +79,4 @@ If you want to add a new `fancy` style, write a `diary-fancy.css`  file and put 
 
 ## Developer
 
-Giovanni Salmeri. [Get help](https://github.com/GiovanniSalmeri/yellow-diary/issues).
+Giovanni Salmeri. [Get help](https://datenstrom.se/yellow/help/)
