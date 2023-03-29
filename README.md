@@ -1,12 +1,16 @@
 # Diary 0.8.16
 
-Events Diary.
+Events diary.
 
 <p align="center"><img src="diary-screenshot.png?raw=true" alt="Screenshot"></p>
 
+## How to install an extension
+
+[Download ZIP file](https://github.com/GiovanniSalmeri/yellow-diary/archive/main.zip) and copy it into your `system/extensions` folder. [Learn more about extensions](https://github.com/annaesvensson/yellow-update).
+
 ## How to create an events list
 
-Put one or more events files into `media/diary/`. You can use different formats (choose whichever you like better).
+Put one or more events files into `media/diary/`. You can use YAML, PSV, TSV and CSV format, choose whichever you like better.
 
 Events in a `.yaml` file (each event begins with `---`; `label` is used to disambiguate between events occurring on the same date):
 
@@ -29,54 +33,65 @@ To add a poster to an event (e.g. with the complete programme), put it in `media
 
 In `place` and `description`, use `*` for italic, `**` for bold, `[text](URL)` for linking, `\n` for newline. Other URLs and email addresses are autolinked.  In `place`, enclose an address in square brackets (e.g. `Galleria degli Uffizi, [Piazzale degli Uffizi 6, Firenze]`), or write GPS coordinates in brackets (e.g. `Galleria degli Uffizi, Piazzale degli Uffizi 6, Firenze [43.7684,11.2556]`), in order to add a link to a pop-up map.
 
-## How to show a diary
+## How to show an events list
 
 Create a `[diary]` shortcut.
 
 The following arguments are available, all but the first argument are optional:
 
-`Location` = filename of events list to show  
-`TimeSpan` (default: `future`) = show `future` or `past` events  
-`Max` (default: `0`) = maximum number of events to show, 0 for unlimited  
-`Tags` = show only events with any of the tags, wrap multiple tags into quotes  
+`Name` = file name  
+`TimeSpan` = show `future` or `past` events  
+`Max` = number of events to show per shortcut, 0 for unlimited  
+`Tags` = show events with specific tags, wrap multiple tags into quotes  
 
-Note: since the year of the events is not displayed, keep the events of each year in a different file and provide with an appropriate heading the page where you embed the diary.
+Note: Since the year of the events is not displayed, keep the events of each year in a different file and provide with an appropriate heading the page where you embed the diary. 
 
-## Example
+If you want to customise the events with CSS, write a `diary-custom.css` file, put it into your `system/extensions` folder, open file `system/extensions/yellow-system.ini` and change `DiaryStyle: custom`. Another option to customise sharing links with CSS is editing the files in your `system/themes` folder. It's recommended to use the later option.
 
-Showing the diary of all future events:
+## Examples
+
+
+Content file with events list:
+
+    ---
+    Title: Example page
+    ---
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
+    labore et dolore magna pizza. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
+    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt 
+    in culpa qui officia deserunt mollit anim id est laborum.
+
+    [diary events2019.psv]
+    
+Showing an events list, different files:
 
     [diary events2019.psv]
     [diary events2019.yaml]
+    [diary events2019.csv]
 
-Showing the diary with various options:
+Showing an events list, various options:
 
     [diary events2019.psv past]
-    [diary events2019.psv future 5]
-    [diary events2019.yaml future 0 philosophy]
+    [diary events2030.yaml future 5]
+    [diary events2030.yaml future 0 philosophy]
 
 ## Settings
 
-The following settings can be configured in file `system/extensions/yellow-system.ini`.
+The following settings can be configured in file `system/extensions/yellow-system.ini`:
 
-`DiaryDir` (default: `media/diary/`) = directory for Diary files  
-`DiaryPosterLocation` (default: `/media/diary/posters/`) = location for posters  
-`DiaryPosterDir` (default: `media/diary/posters/`) = directory for posters  
-`DiaryThumbnail` (default: `1`) = show thumbnails, 1 or 0  
-`DiaryThumbnailLocation` (default: `/media/diary/thumbnails/`) = location for thumbnails  
-`DiaryThumbnailDir` (default: `media/diary/thumbnails/`) = directory for thumbnails  
-`DiaryMaps` (default: `openstreetmap`) = which map service is used, `openstreetmap` or `googlemaps`  
-`DiaryCalendar` (default: `1`) = include link for iCalendar, 1 or 0  
-`DiaryCalendarLocation` (default: `/media/diary/icalendar/`) = location for iCalendar files  
-`DiaryCalendarDir` (default: `media/diary/icalendar/`) = directory for iCalendar files  
-`DiaryStyle` (default: `plain`) = diary style (you can choose between `plain`, `squared`, `rounded`)  
-
-If you want to add a new `fancy` style, write a `diary-fancy.css`  file and put into the `system/extensions` folder.
-
-## Installation
-
-[Download extension](https://github.com/GiovanniSalmeri/yellow-diary/archive/main.zip) and copy zip file into your `system/extensions` folder. Right click if you use Safari.
+`DiaryDir` = directory for diary files  
+`DiaryPosterLocation` = location for posters  
+`DiaryPosterDir` = directory for posters  
+`DiaryThumbnail` = show thumbnails, 1 or 0  
+`DiaryThumbnailLocation` = location for thumbnails  
+`DiaryThumbnailDir` = directory for thumbnails  
+`DiaryMaps` = which map service is used, `openstreetmap` or `googlemaps`  
+`DiaryCalendar` = include link for iCalendar, 1 or 0  
+`DiaryCalendarLocation` = location for iCalendar files  
+`DiaryCalendarDir` = directory for iCalendar files  
+`DiaryStyle` = diary style, e.g. `plain`, `squared`, `rounded`  
 
 ## Developer
 
-Giovanni Salmeri. [Get help](https://datenstrom.se/yellow/help/)
+Giovanni Salmeri. [Get help](https://datenstrom.se/yellow/help/).
