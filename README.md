@@ -46,7 +46,7 @@ The following arguments are available, all but the first argument are optional:
 
 Note: Since the year of the events is not displayed, keep the events of each year in a different file and provide with an appropriate heading the page where you embed the diary. 
 
-If you want to customise the events with CSS, write a `diary-custom.css` file, put it into your `system/extensions` folder, open file `system/extensions/yellow-system.ini` and change `DiaryStyle: custom`. Another option to customise sharing links with CSS is editing the files in your `system/themes` folder. It's recommended to use the later option.
+If you want to customise the events with CSS, write a `diary-custom.css` file, put it into your `system/extensions` folder, open file `system/extensions/yellow-system.ini` and change `DiaryStyle: custom`. Another option to customise the events with CSS is editing the files in your `system/themes` folder. It's recommended to use the latter option.
 
 ## Examples
 
