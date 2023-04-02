@@ -232,6 +232,7 @@ class YellowDiary {
     function geolocation($address) {
         $cacheFile = $this->yellow->system->get("coreExtensionDirectory")."openstreetmap.csv";
         $fileHandle = @fopen($cacheFile, "r");
+        $cache = [];
         if ($fileHandle) {
             while ($data = fgetcsv($fileHandle)) {
                 $cache[$data[0]] = array($data[1], $data[2]);
