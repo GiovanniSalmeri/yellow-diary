@@ -8,6 +8,19 @@ Events diary.
 
 [Download ZIP file](https://github.com/GiovanniSalmeri/yellow-diary/archive/main.zip) and copy it into your `system/extensions` folder. [Learn more about extensions](https://github.com/annaesvensson/yellow-update).
 
+## How to show an events list
+
+Create a `[diary]` shortcut.
+
+The following arguments are available, all but the first argument are optional:
+
+`Name` = file name of events list  
+`TimeSpan` = show `future` or `past` events  
+`Max` = number of events to show per shortcut, 0 for unlimited  
+`Tags` = show events with specific tags, wrap multiple tags into quotes  
+
+If you want to customise the events with CSS, write a `diary-custom.css` file, put it into your `system/extensions` folder, open file `system/extensions/yellow-system.ini` and change `DiaryStyle: custom`. Another option to customise the events with CSS is editing the files in your `system/themes` folder. It's recommended to use the latter option.
+
 ## How to create an events list
 
 Put one or more events files into `media/diary/`. You can use YAML, PSV, TSV and CSV format, choose whichever you like better.
@@ -27,29 +40,15 @@ Events in a `.psv` file (one event per line):
 
     YYYY-MM-DD | HH:MM | HH:MM | label | place  | description | tags
 
-Events can be written also in a `.tsv` or a `.csv` format (in this latter place and description must be wrapped in quotes if they contain commas).
+Events can be written also in a `.tsv` or a `.csv` format.
 
-To add a poster to an event (e.g. with the complete programme), put it in `media/diary/posters/` with the name `YYYY-MM-DD-label.pdf`. To add an image different from the poster thumbnail, put it in `media/diary/thumbnail/` with the name `YYYY-MM-DD-label.jpg` and a timestamp newer than that of the poster.
+To add a poster to an event, put it in `media/diary/posters/` with the name `YYYY-MM-DD-label.pdf`. To add an image different from the poster thumbnail, put it in `media/diary/thumbnail/` with the name `YYYY-MM-DD-label.jpg` and a timestamp newer than that of the poster.
 
 In `place` and `description`, use `*` for italic, `**` for bold, `[text](URL)` for linking, `\n` for newline. Other URLs and email addresses are autolinked.  In `place`, enclose an address in square brackets (e.g. `Galleria degli Uffizi, [Piazzale degli Uffizi 6, Firenze]`), or write GPS coordinates in brackets (e.g. `Galleria degli Uffizi, Piazzale degli Uffizi 6, Firenze [43.7684,11.2556]`), in order to add a link to a pop-up map.
 
-## How to show an events list
-
-Create a `[diary]` shortcut.
-
-The following arguments are available, all but the first argument are optional:
-
-`Name` = file name  
-`TimeSpan` = show `future` or `past` events  
-`Max` = number of events to show per shortcut, 0 for unlimited  
-`Tags` = show events with specific tags, wrap multiple tags into quotes  
-
-Note: Since the year of the events is not displayed, keep the events of each year in a different file and provide with an appropriate heading the page where you embed the diary. 
-
-If you want to customise the events with CSS, write a `diary-custom.css` file, put it into your `system/extensions` folder, open file `system/extensions/yellow-system.ini` and change `DiaryStyle: custom`. Another option to customise the events with CSS is editing the files in your `system/themes` folder. It's recommended to use the latter option.
+Since the year of the events is not displayed, keep the events of each year in a different file and provide with an appropriate heading the page where you embed the diary. 
 
 ## Examples
-
 
 Content file with events list:
 
