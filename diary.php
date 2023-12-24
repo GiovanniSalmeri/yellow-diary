@@ -80,6 +80,9 @@ class YellowDiary {
 
     // Handle page content of shortcut
     public function onParseContentShortcut($page, $name, $text, $type) {
+        define("THUMBWIDTH", 150);
+        define("GOOGLEMAPS", "https://www.google.com/maps/place/");
+        define("OSM", "https://www.openstreetmap.org/#map=17/");
         $output = null;
         if ($name=="diary" && ($type=="block" || $type=="inline")) {
             list($eventList, $timeSpan, $max, $tags) = $this->yellow->toolbox->getTextArguments($text);
@@ -115,7 +118,6 @@ class YellowDiary {
                     $eventDate = "<b>".$this->yellow->language->getTextHtml("diaryDay").":</b> <span class=\"wday\">".$dateWeekdays[($getDate["wday"]+6) % 7]."</span> <span class=\"mday\">".$getDate["mday"]."</span> <span class=\"month\">".$dateMonths[$getDate["mon"]-1]."</span>";
 
                     // Poster thumbnail and link
-                    define ("THUMBWIDTH", 150);
                     $posterLink = null;
                     $pdfName = $this->yellow->system->get("diaryPosterDirectory").$eventId.".pdf";
                     $thumbName = $this->yellow->system->get("diaryThumbnailDirectory").$eventId.".jpg";
@@ -154,8 +156,6 @@ class YellowDiary {
                     // Geolocation and map link
                     $eventPlaceGeo = $eventPlaceMap = null;
                     if (preg_match("/^(.*?)\[(.+?)\](.*)/", $event[4], $matches)) {
-                        define("GOOGLEMAPS", "https://www.google.com/maps/place/");
-                        define("OSM", "https://www.openstreetmap.org/#map=17/");
                         if (substr($matches[2], 0, 4) == "geo:") $matches[2] = (substr($address, 4));
                         list($lat, $lon) = explode(",", explode(";", $matches[2])[0]);
                         $lat = trim($lat); $lon = trim($lon);
