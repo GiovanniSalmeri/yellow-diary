@@ -272,12 +272,14 @@ class YellowDiary {
     // The following code is from class YellowOpenStreetMap
     function nominatim($address) {
         $ua = ini_set("user_agent", "Yellow Diary extension ". $this::VERSION);
-        $nominatim = simplexml_load_file("https://nominatim.openstreetmap.org/search?format=xml&q=".rawurlencode($address));
+        $nominatim = json_decode(file_get_contents("https://nominatim.openstreetmap.org/search?format=json&q=".rawurlencode($address)), true);
         ini_set("user_agent", $ua);
         if ($nominatim) {
-            $lat = (float)$nominatim->place["lat"];
-            $lon = (float)$nominatim->place["lon"];
+            $lat = (float)$nominatim[0]["lat"];
+            $lon = (float)$nominatim[0]["lon"];
             return array($lat, $lon);
+        } else {
+            return [ null, null ];
         }
     }
     function geolocation($address) {
