@@ -243,10 +243,10 @@ class YellowDiary {
                 $currRec = -1;
                 while (($line = fgets($fileHandle)) !== false) {
                     $line = rtrim($line);
-                    if ($line == "---") { 
-                        $currRec += 1;
-                    } elseif ($line[0] == "#") {
+                    if ($line == "" || $line[0] == "#") {
                         continue;
+                    } elseif ($line == "---") { 
+                        $currRec += 1;
                     } elseif ($currRec >= 0) {
                         if (preg_match("/^(.*?):\s+(.*?)\s*$/", $line, $matches) && isset($FIELD[$matches[1]])) {
                             $events[$currRec][$FIELD[$matches[1]]] = $matches[2];
