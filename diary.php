@@ -162,14 +162,14 @@ class YellowDiary {
                         if (is_numeric($lat) && is_numeric($lon)) {
                             $event[4] = trim($matches[1].$matches[3]);
                             $eventPlaceGeo = $lat.";".$lon;
-                            if ($this->yellow->system->get("diaryMaps") == "google") {
+                            if ($this->yellow->system->get("diaryMaps") == "googlemaps") {
                                 $eventPlaceMap = GOOGLEMAPS.$lat.",".$lon;
                             } else {
                                 $eventPlaceMap = OSM.$lat."/".$lon;
                             }
                         } else {
                             $event[4] = $matches[1].$matches[2].$matches[3];
-                            if ($this->yellow->system->get("diaryMaps") == "google") {
+                            if ($this->yellow->system->get("diaryMaps") == "googlemaps") {
                                 $eventPlaceMap = GOOGLEMAPS.rawurlencode($matches[2]);
                             } else {
                                 list($lat, $lon) = $this->geolocation($matches[2]);
