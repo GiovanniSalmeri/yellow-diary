@@ -25,7 +25,7 @@ class YellowDiary {
             $path = $this->yellow->system->get($dir);
             if (!is_string_empty($path) && !is_dir($path)) @mkdir($path, 0777, true);
         }
-        $this->yellow->language->setDefaults([
+        $this->yellow->language->setDefaults(array(
             "Language: en",
             "DiaryDay: Day",
             "DiaryHour: Hour",
@@ -75,7 +75,7 @@ class YellowDiary {
             "DiaryNoEvent: Nenhum evento no momento",
             "DiaryAdd: Adicionar ao seu calendário",
             "DiaryPoster: Cartaz",
-        ]);
+        ));
     }
 
     // Handle page content of shortcut
