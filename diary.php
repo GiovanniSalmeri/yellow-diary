@@ -2,24 +2,29 @@
 // Diary extension, https://github.com/GiovanniSalmeri/yellow-diary
 
 class YellowDiary {
-    const VERSION = "0.8.16";
+    const VERSION = "0.9.1";
     public $yellow;         //access to API
     public $siteId;         //site root (string)
+
+    const GOOGLEMAPS = "https://www.google.com/maps/place/";
+    const OSM = "https://www.openstreetmap.org/#map=17/";
+    const THUMBWIDTH = 150;
     
     // Handle initialisation
     public function onLoad($yellow) {
         $this->yellow = $yellow;
-        $this->yellow->system->setDefault("diaryDirectory", "media/diary/");
+        $this->yellow->system->setDefault("diaryLocation", "/media/diary/");
         $this->yellow->system->setDefault("diaryPosterLocation", "/media/diary/posters/");
-        $this->yellow->system->setDefault("diaryPosterDirectory", "media/diary/posters/");
         $this->yellow->system->setDefault("diaryThumbnail", "1");
         $this->yellow->system->setDefault("diaryThumbnailLocation", "/media/diary/thumbnails/");
-        $this->yellow->system->setDefault("diaryThumbnailDirectory", "media/diary/thumbnails/");
         $this->yellow->system->setDefault("diaryMaps", "openstreetmap");
         $this->yellow->system->setDefault("diaryCalendar", "1");
         $this->yellow->system->setDefault("diaryCalendarLocation", "/media/diary/icalendar/");
-        $this->yellow->system->setDefault("diaryCalendarDirectory", "media/diary/icalendar/");
         $this->yellow->system->setDefault("diaryStyle", "plain");
+        $this->yellow->system->set("diaryDirectory", $this->yellow->lookup->findMediaDirectory("diaryLocation"));
+        $this->yellow->system->set("diaryPosterDirectory", $this->yellow->lookup->findMediaDirectory("diaryPosterLocation"));
+        $this->yellow->system->set("diaryThumbnailDirectory", $this->yellow->lookup->findMediaDirectory("diaryThumbnailLocation"));
+        $this->yellow->system->set("diaryCalendarDirectory", $this->yellow->lookup->findMediaDirectory("diaryCalendarLocation"));
         $this->siteId = $this->getSiteId();
         foreach (["diaryDirectory", "diaryPosterDirectory", "diaryThumbnailDirectory", "diaryCalendarDirectory"] as $dir) {
             $path = $this->yellow->system->get($dir);
@@ -79,10 +84,10 @@ class YellowDiary {
     }
 
     // Handle page content of shortcut
-    public function onParseContentShortcut($page, $name, $text, $type) {
-        define("THUMBWIDTH", 150);
-        define("GOOGLEMAPS", "https://www.google.com/maps/place/");
-        define("OSM", "https://www.openstreetmap.org/#map=17/");
+    public function onParseContentElement($page, $name, $text, $attributes, $type) {
+        //define("self::THUMBWIDTH", 150);
+        //define("self::GOOGLEMAPS", "https://www.google.com/maps/place/");
+        //define("self::OSM", "https://www.openstreetmap.org/#map=17/");
         $output = null;
         if ($name=="diary" && ($type=="block" || $type=="inline")) {
             list($eventList, $timeSpan, $max, $tags) = $this->yellow->toolbox->getTextArguments($text);
@@ -121,36 +126,36 @@ class YellowDiary {
                     $posterLink = null;
                     $pdfName = $this->yellow->system->get("diaryPosterDirectory").$eventId.".pdf";
                     $thumbName = $this->yellow->system->get("diaryThumbnailDirectory").$eventId.".jpg";
-                    $pdfLoc = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("diaryPosterLocation").$eventId.".pdf";
-                    $thumbLoc = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("diaryThumbnailLocation").$eventId.".jpg";
+                    $pdfLocation = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("diaryPosterLocation").$eventId.".pdf";
+                    $thumbLocation = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("diaryThumbnailLocation").$eventId.".jpg";
                     if (@filemtime($pdfName)) {
-                        if ($this->yellow->system->get("diaryThumbnail") && !@filemtime($thumbName) || filemtime($thumbName) < filemtime($pdfName)) {
-                            if(extension_loaded('Imagick') && false) {
+                        if ($this->yellow->system->get("diaryThumbnail") && (!@filemtime($thumbName) || filemtime($thumbName) < filemtime($pdfName))) {
+                            if(extension_loaded('Imagick')) {
                                 $im = new Imagick($pdfName."[0]");
                                 $im->setimageformat("jpeg");
                                 $im->setImageAlphaChannel(Imagick::ALPHACHANNEL_REMOVE);
-                                $im->thumbnailImage(THUMBWIDTH, 0);
+                                $im->thumbnailImage(self::THUMBWIDTH, 0);
                                 $im->writeImage($thumbName);
                                 $im->clear();
                             } else {
-				//exec(escapeshellcmd("gm convert -thumbnail ".THUMBWIDTH. "{$pdfName}[0] $thumbName"));
-                                exec(escapeshellcmd("convert -alpha remove -thumbnail ".THUMBWIDTH. "x {$pdfName}[0] $thumbName"));
+				//exec(escapeshellcmd("gm convert -thumbnail ".self::THUMBWIDTH. "{$pdfName}[0] $thumbName"));
+                                exec(escapeshellcmd("convert -alpha remove -thumbnail ".self::THUMBWIDTH. "x {$pdfName}[0] $thumbName"));
                             }
                         }
                         $thumbSize = getimagesize($thumbName);
-                        if ($thumbSize[0] == THUMBWIDTH) {
+                        if ($thumbSize[0] == self::THUMBWIDTH) {
                             $thumbAttr = $thumbSize[3];
                         } elseif ($thumbSize[0] > 0) { // resize thumbnail
-                            $newHeight = floor($thumbSize[1]*THUMBWIDTH/$thumbSize[0]);
-                            $thumbAttr = "width=\"".THUMBWIDTH."\" height=\"".$newHeight."\"";
+                            $newHeight = floor($thumbSize[1]*self::THUMBWIDTH/$thumbSize[0]);
+                            $thumbAttr = "width=\"".self::THUMBWIDTH."\" height=\"".$newHeight."\"";
                             if ($this->yellow->extension->isExisting("image")) {
-                                list($thumbLoc, $THUMBWIDTH, $newHeight) = $this->yellow->extension->get("image")->getImageInformation($this->yellow->system->get("diaryThumbnailDirectory").$eventId.".jpg", 150, $newHeight);
+                                list($thumbLocation, $newWidth, $newHeight) = $this->yellow->extension->get("image")->getImageInformation($this->yellow->system->get("diaryThumbnailDirectory").$eventId.".jpg", 150, $newHeight);
                             }
                         }
                     }
                     if (@filemtime($thumbName)) {
-                        $posterLink = "<img src=\"".htmlspecialchars($thumbLoc)."\" $thumbAttr alt=\"Poster\" />";
-                        if (@filemtime($pdfName)) $posterLink = "<a class=\"thumb\" href=\"".htmlspecialchars($pdfLoc)."\">".$posterLink."</a>";
+                        $posterLink = "<img src=\"".htmlspecialchars($thumbLocation)."\" $thumbAttr alt=\"Poster\" />";
+                        if (@filemtime($pdfName)) $posterLink = "<a class=\"thumb\" href=\"".htmlspecialchars($pdfLocation)."\">".$posterLink."</a>";
                     }
 
                     // Geolocation and map link
@@ -163,33 +168,33 @@ class YellowDiary {
                             $event[4] = trim($matches[1].$matches[3]);
                             $eventPlaceGeo = $lat.";".$lon;
                             if ($this->yellow->system->get("diaryMaps") == "googlemaps") {
-                                $eventPlaceMap = GOOGLEMAPS.$lat.",".$lon;
+                                $eventPlaceMap = self::GOOGLEMAPS.$lat.",".$lon;
                             } else {
-                                $eventPlaceMap = OSM.$lat."/".$lon;
+                                $eventPlaceMap = self::OSM.$lat."/".$lon;
                             }
                         } else {
                             $event[4] = $matches[1].$matches[2].$matches[3];
                             if ($this->yellow->system->get("diaryMaps") == "googlemaps") {
-                                $eventPlaceMap = GOOGLEMAPS.rawurlencode($matches[2]);
+                                $eventPlaceMap = self::GOOGLEMAPS.rawurlencode($matches[2]);
                             } else {
                                 list($lat, $lon) = $this->geolocation($matches[2]);
                                 $eventPlaceGeo = $lat.";".$lon;
-                                $eventPlaceMap = OSM.$lat."/".$lon;
+                                $eventPlaceMap = self::OSM.$lat."/".$lon;
                             }
                         }
                     }
 
                     // Generate iCalendar file
-                    $calLink = null;
+                    $calendarLink = null;
                     if ($timeSpan == "future" && $this->yellow->system->get("diaryCalendar")) {
-                        $calName = $this->yellow->system->get("diaryCalendarDirectory").$eventId.".ics";
-                        if (!@filemtime($calName) || filemtime($calName) < filemtime($eventListName)) {
-                            $fileHandle = @fopen($calName, "w");
+                        $calendarName = $this->yellow->system->get("diaryCalendarDirectory").$eventId.".ics";
+                        if (!@filemtime($calendarName) || filemtime($calendarName) < filemtime($eventListName)) {
+                            $fileHandle = @fopen($calendarName, "w");
                             fwrite($fileHandle, $this->getCalendar($event, $eventId, $eventPlaceGeo, $eventTags));
                             fclose($fileHandle);
                         }
-                        $calLoc = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("diaryCalendarLocation").$eventId.".ics";
-                        $calLink = "<a class=\"calendar\" href=\"".htmlspecialchars($calLoc)."\">".$this->yellow->language->getTextHtml("diaryAdd")."</a>";
+                        $calendarLocation = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("diaryCalendarLocation").$eventId.".ics";
+                        $calendarLink = "<a class=\"calendar\" href=\"".htmlspecialchars($calendarLocation)."\">".$this->yellow->language->getTextHtml("diaryAdd")."</a>";
                     }
 
                     // Generate HTML
@@ -199,8 +204,8 @@ class YellowDiary {
                     $output .= "<div class=\"time\"><b>".$this->yellow->language->getTextHtml("diaryHour").":</b> ".
 ($event[1][0] == "0" ? substr($event[1], 1) : $event[1])."-".($event[2][0] == "0" ? substr($event[2], 1) : $event[2])."</div>\n";
                     $output .= "<div class=\"place\"><b>".$this->yellow->language->getTextHtml("diaryPlace").":</b> ".($eventPlaceMap ? "<a class=\"popup\" href=\"".htmlspecialchars($eventPlaceMap)."\">".$this->toHTML($event[4])."</a>" : $this->toHTML($event[4]))."</div>\n";
-                    $output .= "<div class=\"desc\">".$this->toHTML($event[5]). (@filemtime($pdfName) && (!@filemtime($thumbName) || !$this->yellow->system->get("diaryThumbnail")) ? " [<a href=\"".htmlspecialchars($pdfLoc)."\">".$this->yellow->language->getTextHtml("diaryPoster")."</a>]" : ""). "</div>\n";
-                    if ($timeSpan == "future" && $this->yellow->system->get("diaryCalendar")) $output .= "<div class=\"add\">$calLink</div>\n";
+                    $output .= "<div class=\"desc\">".$this->toHTML($event[5]). (@filemtime($pdfName) && (!@filemtime($thumbName) || !$this->yellow->system->get("diaryThumbnail")) ? " [<a href=\"".htmlspecialchars($pdfLocation)."\">".$this->yellow->language->getTextHtml("diaryPoster")."</a>]" : ""). "</div>\n";
+                    if ($timeSpan == "future" && $this->yellow->system->get("diaryCalendar")) $output .= "<div class=\"add\">$calendarLink</div>\n";
                     $output .= "</li>\n";
                     $eventsShown += 1;
                 }
@@ -281,9 +286,11 @@ class YellowDiary {
         }
     }
     function geolocation($address) {
-        $cacheFile = $this->yellow->system->get("coreExtensionDirectory")."openstreetmap.csv";
-        $fileHandle = @fopen($cacheFile, "r");
         $cache = [];
+        $cacheDirectory = $this->yellow->system->get("coreCacheDirectory");
+        if ($cacheDirectory!=="" && !is_dir($cacheDirectory)) @mkdir($cacheDirectory, 0777, true);
+        $cacheFile = $cacheDirectory."openstreetmap.csv";
+        $fileHandle = @fopen($cacheFile, "r");
         if ($fileHandle) {
             while ($data = fgetcsv($fileHandle)) {
                 $cache[$data[0]] = array($data[1], $data[2]);
@@ -336,7 +343,7 @@ class YellowDiary {
         if ($eventPlaceGeo) $lines[] ="GEO:".str_replace([",", " "], [";", ""], $ical['geo']);
         if (preg_match("/\*(.*?)\*/", $event[5], $matches)) $lines[] = "SUMMARY:".$escape($matches[1]);
         $lines[] = "DESCRIPTION:".$escape($event[5]);
-        if (@filemtime($pdfName) && $this->yellow->system->get("diaryThumbnailDirectory")) $lines[] = "ATTACH:".$this->yellow->system->get("coreServerBase").$pdfLoc;
+        if (@filemtime($pdfName) && $this->yellow->system->get("diaryThumbnailDirectory")) $lines[] = "ATTACH:".$this->yellow->system->get("coreServerBase").$pdfLocation;
         if ($eventTags) $lines[] = "CATEGORIES:".implode(",",$eventTags);
         $lines[] ="END:VEVENT";
         $lines[] ="END:VCALENDAR";
@@ -364,10 +371,10 @@ class YellowDiary {
     public function onParsePageExtra($page, $name) {
         $output = null;
         if ($name=="header") {
-            $extensionLocation = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("coreExtensionLocation");
+            $assetLocation = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("coreAssetLocation");
             $style = $this->yellow->system->get("diaryStyle");
-            $output .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"{$extensionLocation}diary-{$style}.css\" />\n";
-            $output .= "<script type=\"text/javascript\" defer=\"defer\" src=\"{$extensionLocation}diary.js\"></script>\n";
+            $output .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"{$assetLocation}diary-{$style}.css\" />\n";
+            $output .= "<script type=\"text/javascript\" defer=\"defer\" src=\"{$assetLocation}diary.js\"></script>\n";
         }
         return $output;
     }

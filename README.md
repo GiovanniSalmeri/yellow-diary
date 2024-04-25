@@ -1,4 +1,4 @@
-# Diary 0.8.16
+# Diary 0.9.1
 
 Events diary.
 
@@ -19,7 +19,7 @@ The following arguments are available, all but the first argument are optional:
 `Max` = number of events to show per shortcut, 0 for unlimited  
 `Tags` = show events with specific tags, wrap multiple tags into quotes  
 
-If you want to customise the events with CSS, write a `diary-custom.css` file, put it into your `system/extensions` folder, open file `system/extensions/yellow-system.ini` and change `DiaryStyle: custom`. Another option to customise the events with CSS is editing the files in your `system/themes` folder. It's recommended to use the latter option.
+If you want to customise the events with CSS, write a `diary-custom.css` file, put it into your `system/themes` folder, open file `system/extensions/yellow-system.ini` and change `DiaryStyle: custom`.
 
 ## How to create an events list
 
@@ -79,16 +79,13 @@ Showing an events list, various options:
 
 The following settings can be configured in file `system/extensions/yellow-system.ini`:
 
-`DiaryDir` = directory for diary files  
+`DiaryLocation` = directory for diary files  
 `DiaryPosterLocation` = location for posters  
-`DiaryPosterDir` = directory for posters  
 `DiaryThumbnail` = show thumbnails, 1 or 0  
 `DiaryThumbnailLocation` = location for thumbnails  
-`DiaryThumbnailDir` = directory for thumbnails  
 `DiaryMaps` = which map service is used, `openstreetmap` or `googlemaps`  
 `DiaryCalendar` = include link for iCalendar, 1 or 0  
 `DiaryCalendarLocation` = location for iCalendar files  
-`DiaryCalendarDir` = directory for iCalendar files  
 `DiaryStyle` = diary style, e.g. `plain`, `squared`, `rounded`  
 
 ## Developer
