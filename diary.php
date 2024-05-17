@@ -83,7 +83,7 @@ class YellowDiary {
         ));
     }
 
-    // Handle page content of shortcut
+    // Handle page content element
     public function onParseContentElement($page, $name, $text, $attributes, $type) {
         //define("self::THUMBWIDTH", 150);
         //define("self::GOOGLEMAPS", "https://www.google.com/maps/place/");
