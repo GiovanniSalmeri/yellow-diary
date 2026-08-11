@@ -322,9 +322,9 @@ class YellowDiary {
         return $text;
     }
 
-    // Build iCalendar object RFC 5545
+    // Build iCalendar object RFC 5545, RFC 6868 (quoting), RFC 2446 (method)
     function getCalendar($event, $eventId, $eventPlaceGeo, $eventTags) {
-        $quote = function($string) { return '"'. str_replace(['^', '"'], ["^^", "^'"], $string) . '"'; }; // RFC 6868
+        $quote = function($string) { return '"'. str_replace(['^', '"'], ["^^", "^'"], $string) . '"'; };
         $escape = function($string) { return addcslashes($string, '\,;'); };
         $timeFormat = "Ymd\THis\Z";
         $start = gmdate($timeFormat, strtotime($event[0]." ".$event[1]));
@@ -333,7 +333,7 @@ class YellowDiary {
         $lines[] ="BEGIN:VCALENDAR";
         $lines[] ="PRODID:-//github.com/GiovanniSalmeri//NONSGML YellowMailer ".$this::VERSION."//EN";
         $lines[] ="VERSION:2.0";
-        $lines[] ="METHOD:REQUEST";
+        $lines[] ="METHOD:PUBLISH";
         $lines[] ="BEGIN:VEVENT";
         $lines[] ="UID:".md5($eventId."@".$this->siteId); // more paranoiac than RFC 5545, less than RFC 7986
         $lines[] ="DTSTAMP:".gmdate($timeFormat);
