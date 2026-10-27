@@ -1,8 +1,8 @@
-# Diary 0.9.1
+# Diary 1.0.0
 
-Events diary.
+Events diary. Developed by Giovanni Salmeri.
 
-<p align="center"><img src="SCREENSHOT.png" alt="Screenshot"></p>
+<p align="center"><img src="screenshot.png" alt="Screenshot"></p>
 
 ## How to install an extension
 
@@ -88,6 +88,4 @@ The following settings can be configured in file `system/extensions/yellow-syste
 `DiaryCalendarLocation` = location for iCalendar files  
 `DiaryStyle` = diary style, e.g. `plain`, `squared`, `rounded`  
 
-## Developer
-
-Giovanni Salmeri. [Get help](https://datenstrom.se/yellow/help/).
+Do you have questions? [Get help](https://datenstrom.se/yellow/help/).

@@ -2,7 +2,7 @@
 // Diary extension, https://github.com/GiovanniSalmeri/yellow-diary
 
 class YellowDiary {
-    const VERSION = "0.9.1";
+    const VERSION = "1.0.0";
     public $yellow;         //access to API
     public $siteId;         //site root (string)
 
@@ -373,8 +373,8 @@ class YellowDiary {
         if ($name=="header") {
             $assetLocation = $this->yellow->system->get("coreServerBase").$this->yellow->system->get("coreAssetLocation");
             $style = $this->yellow->system->get("diaryStyle");
-            $output .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"{$assetLocation}diary-{$style}.css\" />\n";
-            $output .= "<script type=\"text/javascript\" defer=\"defer\" src=\"{$assetLocation}diary.js\"></script>\n";
+            $output .= "<link rel=\"stylesheet\" media=\"all\" href=\"{$assetLocation}diary-{$style}.css\" />\n";
+            $output .= "<script defer=\"defer\" src=\"{$assetLocation}diary.js\"></script>\n";
         }
         return $output;
     }
